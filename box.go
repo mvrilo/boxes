@@ -33,6 +33,10 @@ func (b *Box) Write(content []byte) (*Box, error) {
 	return b, err
 }
 
+func (b *Box) WriteString(content string) (*Box, error) {
+	return b.Write([]byte(content))
+}
+
 func (b *Box) Render() []byte {
 	content := b.Content.Bytes()
 	final := bytes.NewBuffer(nil)
