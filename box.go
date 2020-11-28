@@ -81,7 +81,7 @@ func (b *Box) Render() []byte {
 		final.WriteString(column)
 		final.Write(emptyRow[0:b.padding])
 		final.Write(line)
-		final.Write(emptyRow[0 : len(line)+padding-2])
+		final.Write(emptyRow[0 : len(emptyRow)-len(line)-(padding)])
 		final.WriteString(column)
 		final.WriteString(newLine)
 	}

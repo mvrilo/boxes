@@ -1,7 +1,7 @@
 # boxes
 
 [![GoDoc](https://godoc.org/github.com/mvrilo/boxes?status.svg)](https://godoc.org/github.com/mvrilo/boxes)
-[![Go Report Card](https://goreportcard.com/badge/github.com/mvrilo/boxes)](https://goreportcard.com/report/github.com/mvrilo/boxes)
+[![Go Report Card](https://goreportcard.com/badge/github.com/mvrilo/boxes?_=1)](https://goreportcard.com/report/github.com/mvrilo/boxes?_=1)
 
 Boxes is a simple ascii box builder.
 
