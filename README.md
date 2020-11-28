@@ -9,17 +9,18 @@ Boxes is a simple ascii box builder.
 
 ```go
 // Output:
-// ___________________
-// |                 |
-// |   hello world   |
-// |_________________|
+// .--------.
+// |        |
+// |   hi   |
+// |        |
+// '--------'
 
 package main
 
 import "github.com/mvrilo/boxes"
 
 func main() {
-	box, err := boxes.New().Padding(2).Write([]byte("hello world"))
+	box, err := boxes.New().Padding(3).Write([]byte("hi"))
 	if err != nil {
 		panic(err)
 	}

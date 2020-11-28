@@ -2,13 +2,16 @@ package boxes
 
 import (
 	"bytes"
+	"math"
 )
 
 const (
-	row     = "_"
-	column  = "|"
-	space   = " "
-	newLine = "\n"
+	bottomCorner = "'"
+	topCorner    = "."
+	row          = "-"
+	column       = "|"
+	space        = " "
+	newLine      = "\n"
 )
 
 // Box is a container for a Content
@@ -24,6 +27,9 @@ func New() *Box {
 }
 
 func (b *Box) Padding(padding int) *Box {
+	if padding > 0 {
+		b.padding = 1
+	}
 	b.padding = padding
 	return b
 }
@@ -38,56 +44,58 @@ func (b *Box) WriteString(content string) (*Box, error) {
 }
 
 func (b *Box) Render() []byte {
+	var lineSize int
+
 	content := b.Content.Bytes()
-	final := bytes.NewBuffer(nil)
-	padding := b.padding
-	if padding > 0 {
-		padding = 1
-	}
-	if padding > 1 {
-		padding = padding / 2
-	}
-
-	var maxLineSize int
-
 	lines := bytes.Split(content, []byte("\n"))
 	for _, line := range lines {
-		if len(line) > maxLineSize {
-			maxLineSize = len(line)
+		if len(line) > lineSize {
+			lineSize = len(line)
 		}
 	}
 
-	lineSize := maxLineSize + padding
-	linepadding := bytes.Repeat([]byte(" "), padding+2)
+	padding := b.padding
+	lineSize = lineSize + (padding * 2)
+	fullRow := bytes.Repeat([]byte(row), lineSize)
+	emptyRow := bytes.Repeat([]byte(" "), lineSize)
 
-	firstLine := bytes.Repeat([]byte(row), lineSize+(padding+2)+4)
-	lastLine := bytes.Repeat([]byte(row), lineSize+(padding+2)+2)
-	emptyLine := bytes.Repeat([]byte(" "), lineSize+(padding+4))
-
-	final.Write(firstLine)
+	final := bytes.NewBuffer(nil)
+	final.Write([]byte(topCorner))
+	final.Write(fullRow)
+	final.Write([]byte(topCorner))
 	final.WriteString(newLine)
 
-	for i := 0; i < padding; i++ {
+	linePadding := b.padding
+	if linePadding > 1 {
+		linePadding = int(math.Ceil(float64(linePadding) * 0.3))
+	}
+
+	for i := 0; i < linePadding; i++ {
 		final.WriteString(column)
-		final.Write(emptyLine)
+		final.Write(emptyRow)
 		final.WriteString(column)
 		final.WriteString(newLine)
 	}
 
 	for _, line := range lines {
 		final.WriteString(column)
-		final.Write(linepadding)
+		final.Write(emptyRow[0:b.padding])
 		final.Write(line)
-		final.Write(emptyLine[0 : len(firstLine)-len(line)-len(linepadding)-2])
+		final.Write(emptyRow[0 : len(line)+padding-2])
 		final.WriteString(column)
 		final.WriteString(newLine)
 	}
 
-	for i := 0; i < padding; i++ {
+	for i := 0; i < linePadding; i++ {
 		final.WriteString(column)
-		final.Write(lastLine)
+		final.Write(emptyRow)
 		final.WriteString(column)
+		final.WriteString(newLine)
 	}
+
+	final.Write([]byte(bottomCorner))
+	final.Write(fullRow)
+	final.Write([]byte(bottomCorner))
 
 	return final.Bytes()
 }

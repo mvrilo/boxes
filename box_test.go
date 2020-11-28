@@ -19,6 +19,7 @@ func TestPadding(t *testing.T) {
 
 func TestWrite(t *testing.T) {
 	box := New()
+	box.Padding(3)
 
 	content := box.Content.Bytes()
 	n := len(content)
