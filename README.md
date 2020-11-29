@@ -8,25 +8,25 @@ Boxes is a simple ascii box builder.
 ## Example
 
 ```go
-// Output:
-// .--------.
-// |        |
-// |   hi   |
-// |        |
-// '--------'
-
 package main
 
 import "github.com/mvrilo/boxes"
 
 func main() {
-	box, err := boxes.New().Padding(3).Write([]byte("hi"))
-	if err != nil {
-		panic(err)
-	}
+	box, _ := boxes.New().Padding(3).WriteString("hey there!")
 	println(string(box.Render()))
 }
 ```
+
+```
+$ go run examples/box/main.go
+.----------------.
+|                |
+|   hey there!   |
+|                |
+'----------------'
+```
+
 
 ## License
 

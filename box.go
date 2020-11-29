@@ -3,6 +3,8 @@ package boxes
 import (
 	"bytes"
 	"math"
+
+	"github.com/rs/xid"
 )
 
 const (
@@ -14,20 +16,22 @@ const (
 	newLine      = "\n"
 )
 
-// Box is a container for a Content
+// Box is a container for a content
 type Box struct {
+	id      []byte
 	padding int
-	Content *bytes.Buffer
+	content *bytes.Buffer
 }
 
 func New() *Box {
 	return &Box{
-		Content: bytes.NewBuffer(nil),
+		id:      xid.New().Bytes(),
+		content: bytes.NewBuffer(nil),
 	}
 }
 
 func (b *Box) Padding(padding int) *Box {
-	if padding > 0 {
+	if padding < 1 {
 		b.padding = 1
 	}
 	b.padding = padding
@@ -35,7 +39,7 @@ func (b *Box) Padding(padding int) *Box {
 }
 
 func (b *Box) Write(content []byte) (*Box, error) {
-	_, err := b.Content.Write(content)
+	_, err := b.content.Write(content)
 	return b, err
 }
 
@@ -43,10 +47,14 @@ func (b *Box) WriteString(content string) (*Box, error) {
 	return b.Write([]byte(content))
 }
 
+func (b *Box) Bytes() []byte {
+	return b.content.Bytes()
+}
+
 func (b *Box) Render() []byte {
 	var lineSize int
 
-	content := b.Content.Bytes()
+	content := b.content.Bytes()
 	lines := bytes.Split(content, []byte("\n"))
 	for _, line := range lines {
 		if len(line) > lineSize {
