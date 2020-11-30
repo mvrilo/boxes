@@ -1,5 +1,7 @@
 package boxes
 
+import "bytes"
+
 type Canvas struct {
 	Boxes []*Box
 }
@@ -19,5 +21,36 @@ func (c *Canvas) Render() (data []byte) {
 		}
 		data = append(data, box.Render()...)
 	}
+	return
+}
+
+func (c *Canvas) HorizontalRender() (final []byte) {
+	for i, box := range c.Boxes {
+		data := box.Render()
+		if i == 0 {
+			final = append(final, data...)
+			continue
+		}
+
+		lines := bytes.Split(final, []byte("\n"))
+		nextLines := bytes.Split(data, []byte("\n"))
+		count := len(lines)
+		if len(nextLines) > count {
+			count = len(nextLines)
+		}
+
+		for i, line := range nextLines {
+			if i >= len(lines) {
+				lines = append(lines, bytes.Repeat([]byte(" "), len(line)+1))
+			}
+
+			lines[i] = append(lines[i], ' ')
+			lines[i] = append(lines[i], line...)
+
+		}
+
+		final = bytes.Join(lines, []byte("\n"))
+	}
+
 	return
 }
