@@ -34,19 +34,15 @@ func (c *Canvas) HorizontalRender() (final []byte) {
 
 		lines := bytes.Split(final, []byte("\n"))
 		nextLines := bytes.Split(data, []byte("\n"))
-		count := len(lines)
-		if len(nextLines) > count {
-			count = len(nextLines)
-		}
+		count := len(lines[0])
 
 		for i, line := range nextLines {
 			if i >= len(lines) {
-				lines = append(lines, bytes.Repeat([]byte(" "), len(line)+1))
+				lines = append(lines, bytes.Repeat([]byte(" "), count))
 			}
 
 			lines[i] = append(lines[i], ' ')
 			lines[i] = append(lines[i], line...)
-
 		}
 
 		final = bytes.Join(lines, []byte("\n"))

@@ -5,13 +5,11 @@ import "github.com/mvrilo/boxes"
 func main() {
 	canvas := boxes.NewCanvas()
 
-	box, _ := boxes.New().Padding(3).WriteString("hello world\n hehehe")
+	box, _ := boxes.New().Padding(3).WriteString("hello world")
 	canvas.AddBox(box)
 
-	box, _ = boxes.New().Padding(3).WriteString("from boxes\n\nyeeha\n:)")
+	box, _ = boxes.New().Padding(3).WriteString("boxes is a simple\nascii box builder\n\n:)")
 	canvas.AddBox(box)
-
-	println(string(canvas.Render()))
 
 	println(string(canvas.HorizontalRender()))
 }

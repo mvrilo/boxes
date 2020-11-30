@@ -25,6 +25,16 @@ $ go run examples/box/main.go
 |   hey there!   |
 |                |
 '----------------'
+
+$ go run examples/canvas/main.go
+.-----------------. .-----------------------.
+|                 | |                       |
+|   hello world   | |   boxes is a simple   |
+|                 | |   ascii box builder   |
+'-----------------' |                       |
+                    |   :)                  |
+                    |                       |
+                    '-----------------------'
 ```
 
 
